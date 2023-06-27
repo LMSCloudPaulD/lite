@@ -7,7 +7,7 @@
 ```TypeScript
 class MyLiteElement extends LiteElement {
     render() {
-        return `<h1>Hello from a LiteElement!</h1>`;
+        return html`<h1>Hello from a LiteElement!</h1>`;
     }
 }
 
@@ -27,7 +27,7 @@ class MyElement extends LitElement {
 ```JavaScript
 class MyLiteElement extends LiteElement {
     render() {
-        return `<h1>Hello from a LiteElement!</h1>`;
+        return html`<h1>Hello from a LiteElement!</h1>`;
     }
 }
 
