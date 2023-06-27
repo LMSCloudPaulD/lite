@@ -16,6 +16,7 @@ class MyLiteElement extends LiteElement {
 class MyElement extends LitElement {
     render() {
         return html`
+            <h1>Hello, world!</h1>
             <div lite="my-lite-element"></div>
         `;
     }
