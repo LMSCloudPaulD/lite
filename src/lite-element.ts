@@ -2,7 +2,7 @@ import { LitElement, PropertyValueMap } from "lit";
 import { render, TemplateResult } from "lit";
 
 export abstract class LiteElement {
-    abstract render(): string | TemplateResult;
+    abstract render(): TemplateResult;
 
     update(host: HTMLElement) {
         render(this.render(), host);
