@@ -19,7 +19,9 @@ export class MyElement extends lite(LitElement, [["my-lite-element", MyLiteEleme
     render() {
         return html`
             <h1>Hello, world!</h1>
-            <div lite="my-lite-element"></div>
+            <div style="color: crimson;">
+                <div lite="my-lite-element"></div>
+            </div>
         `;
     }
 }
