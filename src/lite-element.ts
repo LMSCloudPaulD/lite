@@ -1,27 +1,28 @@
 import { LitElement, PropertyValueMap } from "lit";
+import { render, TemplateResult } from "lit";
 
 export abstract class LiteElement {
     abstract render(): string;
 
-    update(host: Element) {
-        host.innerHTML = this.render();
+    update(host: HTMLElement) {
+        render(this.render(), host);
     }
 }
 
 class LiteElementHost {
     private _liteElement: LiteElement;
 
-    constructor(liteElement: LiteElement, host: Element) {
+    constructor(liteElement: LiteElement, host: HTMLElement) {
         this._liteElement = liteElement;
         this.updateContent(host);
     }
 
-    updateContent(host: Element) {
-        host.innerHTML = this._liteElement.render();
+    updateContent(host: HTMLElement) {
+        render(this._liteElement.render(), host);
     }
 }
 
-const liteElementsMap = new Map<string, new() => LiteElement>();
+const liteElementsMap = new Map<string, new () => LiteElement>();
 
 /**
  * This decorator is used to traverse the DOM and find all elements with the
@@ -33,7 +34,7 @@ const liteElementsMap = new Map<string, new() => LiteElement>();
  */
 export function lite<T extends new (...args: any[]) => LitElement>(
     Base: T,
-    elements: Array<[string, new() => LiteElement]>
+    elements: Array<[string, new () => LiteElement]>
 ): T {
     elements.forEach(([name, LiteElementConstructor]) => {
         liteElementsMap.set(name, LiteElementConstructor);
@@ -49,12 +50,14 @@ export function lite<T extends new (...args: any[]) => LitElement>(
             const liteElements = this.shadowRoot?.querySelectorAll('[lite]');
             if (liteElements?.length) {
                 liteElements.forEach((liteElementHost) => {
-                    const liteElementName = liteElementHost.getAttribute('lite');
-                    if (liteElementName) {
-                        const LiteElementConstructor = liteElementsMap.get(liteElementName);
-                        if (LiteElementConstructor) {
-                            const liteElementInstance = new LiteElementConstructor();
-                            new LiteElementHost(liteElementInstance, liteElementHost);
+                    if (liteElementHost instanceof HTMLElement) {
+                        const liteElementName = liteElementHost.getAttribute('lite');
+                        if (liteElementName) {
+                            const LiteElementConstructor = liteElementsMap.get(liteElementName);
+                            if (LiteElementConstructor) {
+                                const liteElementInstance = new LiteElementConstructor();
+                                new LiteElementHost(liteElementInstance, liteElementHost);
+                            }
                         }
                     }
                 });

@@ -3,7 +3,7 @@ import { LiteElement, lite } from '../dist/lite-element.js';
 
 class MyLiteElement extends LiteElement {
     render() {
-        return `<h1>Hello from a LiteElement!</h1>`;
+        return html`<h1>Hello from a LiteElement!</h1>`;
     }
 }
 
