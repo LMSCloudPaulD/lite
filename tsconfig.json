@@ -1,12 +1,17 @@
 {
-    "compilerOptions": {
-      "target": "esnext",
-      "module": "commonjs",
-      "strict": true,
-      "declaration": true,
-      "outDir": "./dist",
-      "sourceMap": true
-    },
-    "include": ["src/**/*.ts"],
-    "exclude": ["node_modules"]
-  }
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "es2020",
+    "lib": ["ESNext", "DOM"],
+    "strict": true,
+    "declaration": true,
+    "outDir": "./dist",
+    "sourceMap": true,
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": true
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules"]
+}

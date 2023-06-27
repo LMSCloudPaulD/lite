@@ -1,12 +1,27 @@
-import { LitElement } from 'lit';
+import { LitElement, PropertyValueMap } from "lit";
 
-export abstract class LiteElement extends HTMLElement {
-    abstract render(): void;
+export abstract class LiteElement {
+    abstract render(): string;
 
-    connectedCallback() {
-        this.render();
+    update(host: Element) {
+        host.innerHTML = this.render();
     }
 }
+
+class LiteElementHost {
+    private _liteElement: LiteElement;
+
+    constructor(liteElement: LiteElement, host: Element) {
+        this._liteElement = liteElement;
+        this.updateContent(host);
+    }
+
+    updateContent(host: Element) {
+        host.innerHTML = this._liteElement.render();
+    }
+}
+
+const liteElementsMap = new Map<string, new() => LiteElement>();
 
 /**
  * This decorator is used to traverse the DOM and find all elements with the
@@ -16,18 +31,38 @@ export abstract class LiteElement extends HTMLElement {
  * that they belong to.
  * @param elements 
  */
-function lite<T extends new (...args: any[]) => LitElement>(constructor: T): T {
-    return class extends constructor {
-        connectedCallback() {
-            super.connectedCallback();
-            const liteElements = this.querySelectorAll('[lite]');
-            for (let i = 0; i < liteElements.length; ++i) {
-                const liteElementHost = liteElements[i];
-                const liteElement = new (liteElementHost.getAttribute('lite') as any)(); 
-                liteElement.render();
+export function lite<T extends new (...args: any[]) => LitElement>(
+    Base: T,
+    elements: Array<[string, new() => LiteElement]>
+): T {
+    elements.forEach(([name, LiteElementConstructor]) => {
+        liteElementsMap.set(name, LiteElementConstructor);
+    });
+
+    class LiteBase extends Base {
+        protected updated(_changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>): void {
+            super.updated(_changedProperties);
+            this.updateContent();
+        }
+
+        updateContent() {
+            const liteElements = this.shadowRoot?.querySelectorAll('[lite]');
+            if (liteElements?.length) {
+                liteElements.forEach((liteElementHost) => {
+                    const liteElementName = liteElementHost.getAttribute('lite');
+                    if (liteElementName) {
+                        const LiteElementConstructor = liteElementsMap.get(liteElementName);
+                        if (LiteElementConstructor) {
+                            const liteElementInstance = new LiteElementConstructor();
+                            new LiteElementHost(liteElementInstance, liteElementHost);
+                        }
+                    }
+                });
             }
         }
-    };
+    }
+
+    return (LiteBase as unknown) as T;
 }
 
 /*
