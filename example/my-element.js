@@ -2,20 +2,29 @@ import { LitElement, html, css } from 'lit';
 import { LiteElement, lite, ReactiveProperty } from '../dist/lite-element.js';
 
 class MyLiteElement extends LiteElement {
-    test;
+    static properties = {
+        message: { type: String },
+        count: { type: Number }
+    };
 
     constructor(host, element) {
         super(host, element);
-        this.test = new ReactiveProperty(host, "LiteElement");
-        this.handleClick = this.handleClick.bind(this); // Bind the method
+        this.message = "LiteElement";
+        this.count = 0;
     }
 
-    handleClick = () => {
-        this.test?.set("LiteElement that's reactive");
+    handleClick() {
+        this.message = "LiteElement that's reactive";
+    }
+
+    handleIncrement() {
+        this.count++;
     }
 
     render() {
-        return html`<h1 @click=${this.handleClick}>Hello from a ${this.test?.get()}!</h1>`;
+        return html`<h1 @click=${this.handleClick}>Hello from a ${this.message}!</h1>
+            <button @click=${this.handleIncrement}>Click me!</button>
+            <p>Count: ${this.count}</p>`;
     }
 }
 
