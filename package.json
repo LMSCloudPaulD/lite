@@ -1,13 +1,17 @@
 {
   "name": "@lmscloud/lite",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "This project aims to provide a way to declaratively create lit-compatible components that aren't encapsulated by a shadow DOM.",
   "main": "dist/lite-element.js",
   "scripts": {
     "build": "rollup -c rollup.config.lib.mjs",
     "build:example": "rollup -c rollup.config.example.mjs"
   },
-  "keywords": ["lit", "web components", "custom elements"],
+  "keywords": [
+    "lit",
+    "web components",
+    "custom elements"
+  ],
   "author": "Paul Derscheid <paul.derscheid@lmscloud.de>",
   "license": "BSD 3-Clause",
   "types": "dist/lite-element.d.ts",
