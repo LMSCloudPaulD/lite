@@ -1,7 +1,7 @@
 import { LitElement, PropertyValueMap, ReactiveController } from "lit";
 import { render, TemplateResult } from "lit";
 
-class ReactiveProperty<T> {
+export class ReactiveProperty<T> {
     private host: LitElement;
 
     private value: T;
@@ -21,7 +21,7 @@ class ReactiveProperty<T> {
     }
 }
 
-class ReactivePropertyCreator {
+export class ReactivePropertyCreator {
     static initReactiveProperties(host: LiteElement, properties: PropertyDescriptorMap) {
         for (const property in properties) {
             this.createReactiveProperty(host, property);
@@ -56,7 +56,7 @@ class ReactivePropertyCreator {
     }
 }
 
-class MethodBinder {
+export class MethodBinder {
     static bindMethodsToInstance(instance: any) {
         const methodNames = Object.getOwnPropertyNames(Object.getPrototypeOf(instance))
             .filter(prop => typeof instance[prop] === 'function');
@@ -107,7 +107,7 @@ export abstract class LiteElement implements ReactiveController {
 
 type LiteElementConstructor = new (host: LitElement, element: HTMLElement) => LiteElement;
 
-class LiteElementHost {
+export class LiteElementHost {
     private _liteElement: LiteElement;
 
     constructor(liteElement: LiteElement, host: HTMLElement) {
@@ -122,7 +122,7 @@ class LiteElementHost {
 
 const liteElementHostMap = new WeakMap<HTMLElement, LiteElementHost>();
 
-class LiteElementUpdater {
+export class LiteElementUpdater {
     static updateElements(host: LitElement, root: ShadowRoot, liteElementsMap: Map<string, LiteElementConstructor>) {
         const liteElements = root.querySelectorAll('[lite]');
         liteElements.forEach((liteElementHost: Element) => {
@@ -160,4 +160,30 @@ export function lite<T extends new (...args: any[]) => LitElement>(
     }
 
     return (LiteBase as unknown) as T;
+}
+
+export function reactive<T>(target: LiteElement, propertyKey: string): any {
+    let internalKey = `__${propertyKey}`;
+    
+    const getter = function (this: any): T {
+        if (this[internalKey] === undefined) {
+            this[internalKey] = new ReactiveProperty<T>(this.host, this[propertyKey]);
+        }
+        return this[internalKey]?.get();
+    };
+
+    const setter = function (this: any, value: T) {
+        if (this[internalKey] === undefined) {
+            this[internalKey] = new ReactiveProperty<T>(this.host, value);
+        } else {
+            this[internalKey].set(value);
+        }
+    };
+
+    Object.defineProperty(target, propertyKey, {
+        get: getter,
+        set: setter,
+        enumerable: true,
+        configurable: true,
+    });
 }
