@@ -9,7 +9,7 @@
   },
   "keywords": ["lit", "web components", "custom elements"],
   "author": "Paul Derscheid <paul.derscheid@lmscloud.de>",
-  "license": "ISC",
+  "license": "BSD 3-Clause",
   "types": "dist/lite-element.d.ts",
   "devDependencies": {
     "@rollup/plugin-node-resolve": "^15.1.0",
