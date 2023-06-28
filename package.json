@@ -1,7 +1,7 @@
 {
   "name": "lite",
   "version": "1.0.0",
-  "description": "",
+  "description": "This project aims to provide a way to declaratively create lit-compatible components that aren't encapsulated by a shadow DOM.",
   "main": "dist/index.js",
   "scripts": {
     "build": "rollup -c rollup.config.lib.mjs",
