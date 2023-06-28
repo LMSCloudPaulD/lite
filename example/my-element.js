@@ -1,5 +1,5 @@
 import { LitElement, html, css } from 'lit';
-import { LiteElement, lite, ReactiveProperty } from '../dist/lite-element.js';
+import { LiteElement, lite } from '../dist/lite-element.js';
 
 class MyLiteElement extends LiteElement {
     static properties = {
