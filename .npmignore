@@ -1,0 +1,19 @@
+# Build files
+dist/*.map
+
+# Source files
+src/
+
+# Configuration files
+rollup.config.example.mjs
+rollup.config.lib.mjs
+tsconfig.json
+
+# Example files
+example/
+
+# Lock files
+pnpm-lock.yaml
+
+# Ignore node modules
+node_modules/
