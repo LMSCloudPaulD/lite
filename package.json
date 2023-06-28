@@ -1,6 +1,6 @@
 {
   "name": "@lmscloud/lite",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "This project aims to provide a way to declaratively create lit-compatible components that aren't encapsulated by a shadow DOM.",
   "main": "dist/lite-element.js",
   "scripts": {
