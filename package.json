@@ -8,7 +8,7 @@
     "build:example": "rollup -c rollup.config.example.mjs"
   },
   "keywords": ["lit", "web components", "custom elements"],
-  "author": "",
+  "author": "Paul Derscheid <paul.derscheid@lmscloud.de>",
   "license": "ISC",
   "types": "dist/lite-element.d.ts",
   "devDependencies": {
