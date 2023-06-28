@@ -4,13 +4,14 @@
   "description": "",
   "main": "dist/index.js",
   "scripts": {
-    "test": "jest",
+    "test": "mocha --require ts-node/register 'test/**/*.test.mjs'",
     "build": "rollup -c rollup.config.lib.mjs",
     "build:example": "rollup -c rollup.config.example.mjs"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "types": "dist/lite-element.d.ts",
   "devDependencies": {
     "@rollup/plugin-node-resolve": "^15.1.0",
     "@rollup/plugin-terser": "^0.4.3",
