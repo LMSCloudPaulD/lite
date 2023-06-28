@@ -4,7 +4,6 @@
   "description": "",
   "main": "dist/index.js",
   "scripts": {
-    "test": "mocha --require ts-node/register 'test/**/*.test.mjs'",
     "build": "rollup -c rollup.config.lib.mjs",
     "build:example": "rollup -c rollup.config.example.mjs"
   },
@@ -16,8 +15,13 @@
     "@rollup/plugin-node-resolve": "^15.1.0",
     "@rollup/plugin-terser": "^0.4.3",
     "@rollup/plugin-typescript": "^11.1.2",
+    "@types/chai": "^4.3.5",
+    "@types/mocha": "^10.0.1",
+    "chai": "^4.3.7",
+    "mocha": "^10.2.0",
     "prettier": "^2.8.8",
     "rollup": "^3.25.3",
+    "ts-node": "^10.9.1",
     "tslib": "^2.6.0",
     "typescript": "^5.1.3"
   },
