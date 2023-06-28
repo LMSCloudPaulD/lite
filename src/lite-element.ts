@@ -1,11 +1,49 @@
-import { LitElement, PropertyValueMap } from "lit";
+import { LitElement, PropertyValueMap, ReactiveController } from "lit";
 import { render, TemplateResult } from "lit";
 
-export abstract class LiteElement {
+export class ReactiveProperty<T> {
+    host: LitElement;
+    
+    private value: T;
+
+    constructor(host: LitElement, value: T) {
+        this.host = host;
+        this.value = value;
+    }
+
+    get(): T {
+        return this.value;
+    }
+
+    set(newValue: T) {
+        this.value = newValue;
+        this.host.requestUpdate();
+    }
+}
+
+export abstract class LiteElement implements ReactiveController {
+    host: LitElement;
+    
+    element: HTMLElement;
+
+    constructor(host: LitElement, element: HTMLElement) {
+        this.host = host;
+        this.element = element;
+        host.addController(this);
+    }
+
+    hostConnected() {
+        this.update(this.element);
+    }
+
+    hostUpdate() {
+        this.update(this.element);
+    }
+
     abstract render(): TemplateResult;
 
-    update(host: HTMLElement) {
-        render(this.render(), host);
+    update(element: HTMLElement) {
+        render(this.render(), element);
     }
 }
 
@@ -22,7 +60,8 @@ class LiteElementHost {
     }
 }
 
-const liteElementsMap = new Map<string, new () => LiteElement>();
+const liteElementsMap = new Map<string, new (host: LitElement, element: HTMLElement) => LiteElement>();
+const liteElementsInstancesMap = new WeakMap<HTMLElement, LiteElement>();
 
 /**
  * This decorator is used to traverse the DOM and find all elements with the
@@ -55,7 +94,11 @@ export function lite<T extends new (...args: any[]) => LitElement>(
                         if (liteElementName) {
                             const LiteElementConstructor = liteElementsMap.get(liteElementName);
                             if (LiteElementConstructor) {
-                                const liteElementInstance = new LiteElementConstructor();
+                                let liteElementInstance = liteElementsInstancesMap.get(liteElementHost);
+                                if (!liteElementInstance) {
+                                    liteElementInstance = new LiteElementConstructor(this, liteElementHost);
+                                    liteElementsInstancesMap.set(liteElementHost, liteElementInstance);
+                                }
                                 new LiteElementHost(liteElementInstance, liteElementHost);
                             }
                         }
@@ -67,7 +110,6 @@ export function lite<T extends new (...args: any[]) => LitElement>(
 
     return (LiteBase as unknown) as T;
 }
-
 /*
 
 Usage:

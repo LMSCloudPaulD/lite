@@ -1,9 +1,21 @@
 import { LitElement, html, css } from 'lit';
-import { LiteElement, lite } from '../dist/lite-element.js';
+import { LiteElement, lite, ReactiveProperty } from '../dist/lite-element.js';
 
 class MyLiteElement extends LiteElement {
+    test;
+
+    constructor(host, element) {
+        super(host, element);
+        this.test = new ReactiveProperty(host, "LiteElement");
+        this.handleClick = this.handleClick.bind(this); // Bind the method
+    }
+
+    handleClick = () => {
+        this.test?.set("LiteElement that's reactive");
+    }
+
     render() {
-        return html`<h1>Hello from a LiteElement!</h1>`;
+        return html`<h1 @click=${this.handleClick}>Hello from a ${this.test?.get()}!</h1>`;
     }
 }
 
