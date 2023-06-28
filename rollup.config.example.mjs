@@ -1,4 +1,4 @@
-import { nodeResolve } from '@rollup/plugin-node-resolve';
+import resolve from '@rollup/plugin-node-resolve';
 import terser from '@rollup/plugin-terser';
 
 export default {
@@ -9,5 +9,5 @@ export default {
     name: 'exampleBundle',
     sourcemap: true,
   },
-  plugins: [nodeResolve(), terser()],
+  plugins: [resolve(), terser()],
 };

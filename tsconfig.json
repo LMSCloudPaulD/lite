@@ -1,15 +1,14 @@
 {
   "compilerOptions": {
-    "target": "esnext",
+    "target": "ES5",
     "module": "es2020",
     "lib": ["ESNext", "DOM"],
     "strict": true,
     "declaration": true,
     "outDir": "./dist",
     "sourceMap": true,
-    "moduleResolution": "node",
+    "moduleResolution": "Node",
     "esModuleInterop": true,
-    "resolveJsonModule": true,
     "skipLibCheck": true
   },
   "include": ["src/**/*.ts"],

@@ -1,7 +1,7 @@
 import { LitElement, PropertyValueMap, ReactiveController } from "lit";
 import { render, TemplateResult } from "lit";
 
-class ReactiveProperty<T> {
+export class ReactiveProperty<T> {
     private host: LitElement;
 
     private value: T;
@@ -56,7 +56,7 @@ class ReactivePropertyCreator {
     }
 }
 
-class MethodBinder {
+export class MethodBinder {
     static bindMethodsToInstance(instance: any) {
         const methodNames = Object.getOwnPropertyNames(Object.getPrototypeOf(instance))
             .filter(prop => typeof instance[prop] === 'function');
